@@ -4,13 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>zcrys</groupId>
-    <artifactId>koth-api</artifactId>
+    <groupId>com.github.zcrys</groupId>
+    <artifactId>KothWars-Api</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>KothAPI</name>
+    <name>KothWars-API</name>
     <description>API for KothWars plugin</description>
+    <url>https://github.com/zcrys/KothWars-Api</url>
 
     <properties>
         <java.version>17</java.version>
@@ -59,22 +60,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Comentamos el plugin de javadoc por ahora -->
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
         </plugins>
     </build>
 </project>
