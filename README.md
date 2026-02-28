@@ -7,7 +7,6 @@
 [![Java](https://img.shields.io/badge/Java-21-orange)]()
 [![Paper](https://img.shields.io/badge/Paper-1.21.3-blue)]()
 [![License](https://img.shields.io/badge/License-MIT-green)]()
-[![Version](https://img.shields.io/badge/Version-1.0.1-success)]()
 [![JitPack](https://img.shields.io/badge/Repository-JitPack-purple)]()
 
 </div>
@@ -78,7 +77,6 @@ repositories {
 <dependency>
   <groupId>com.github.zcrys</groupId>
   <artifactId>KothWars-Api</artifactId>
-  <version>1.0.1</version>
   <scope>provided</scope>
 </dependency>
 ```
@@ -87,7 +85,6 @@ repositories {
 
 ```gradle
 dependencies {
-  compileOnly 'com.github.zcrys:KothWars-Api:1.0.1'
 }
 ```
 
@@ -149,19 +146,17 @@ private KothAPI getAPIByReflection() {
 
 All methods in `KothListener` are **default methods** — override only what you need.
 
-| Event               | Description             |
-| ------------------- | ----------------------- |
-| `onKothStart`       | Manual start            |
-| `onKothStartAuto`   | Auto scheduled start    |
-| `onKothStop`        | KOTH stopped            |
-| `onCaptureStart`    | Player starts capturing |
-| `onCaptureProgress` | Every 5 seconds         |
-| `onCaptureComplete` | Player wins             |
-| `onPlayerEnter`     | Player enters zone      |
-| `onPlayerLeave`     | Player leaves zone      |
-| `onPlayerDeath`     | Death inside zone       |
-| `onKothCreated`     | New KOTH created        |
-| `onKothDeleted`     | KOTH deleted            |
+| Event               | Description                    |
+| `onKothStart`       | Manual start                   |
+| `onKothStartAuto`   | Auto scheduled start           |
+| `onKothStop`        | KOTH stopped                   |
+| `onCaptureStart`    | Player starts capturing        |
+| `onCaptureComplete` | Player wins                    |
+| `onPlayerEnter`     | Player enters zone             |
+| `onPlayerLeave`     | Player leaves zone             |
+| `onPlayerDeath`     | Death inside zone              |
+| `onKothCreated`     | New KOTH created               |
+| `onKothDeleted`     | KOTH deleted                   |
 
 ---
 
@@ -252,7 +247,6 @@ Shading may cause:
 
 # 🔒 Design Philosophy
 
-The API is intentionally **read-only**.
 
 ### Why?
 
@@ -271,12 +265,6 @@ If you need write access:
 
 # 🗺 Roadmap
 
-| Version | Feature               |
-| ------- | --------------------- |
-| 1.1.0   | Write API             |
-| 1.1.0   | Extended player stats |
-| 1.2.0   | Async events          |
-| 2.0.0   | Cross-server support  |
 
 ---
 
@@ -297,4 +285,3 @@ If you want to contribute:
 ### ⭐ If this API helped you, consider starring the repository!
 
 </div>
-

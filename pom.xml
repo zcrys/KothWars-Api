@@ -8,11 +8,12 @@
 
     <groupId>com.github.zcrys</groupId>
     <artifactId>KothWars-Api</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version> <!-- Updated version -->
     <packaging>jar</packaging>
 
     <name>KothWars-API</name>
-    <description>API for KothWars plugin</description>
+    <description>Official API for the KothWars plugin - King of the Hill system</description>
+    <url>https://github.com/zcrys/KothWars</url>
 
     <properties>
         <java.version>21</java.version>
@@ -29,6 +30,7 @@
     </repositories>
 
     <dependencies>
+        <!-- Paper API - Compile only, not included in the final JAR -->
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
@@ -39,7 +41,7 @@
 
     <build>
         <plugins>
-            <!-- Compiler -->
+            <!-- Java compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -47,32 +49,73 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg> <!-- Keeps parameter names for reflection -->
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
-            <!-- Sources jar (necesario para JitPack) -->
+            <!-- Generate sources JAR (required for JitPack) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.0</version>
                 <executions>
                     <execution>
+                        <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Generate Javadoc (optional but recommended) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
                     <failOnError>false</failOnError>
+                    <doclint>none</doclint>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
         </plugins>
     </build>
+
+    <!-- License information -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- Developers -->
+    <developers>
+        <developer>
+            <id>zcrys</id>
+            <name>zcrys</name>
+            <email>zcrys938@gmail.com</email>
+            <url>https://github.com/zcrys</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/zcrys/KothWars-Api.git</connection>
+        <developerConnection>scm:git:ssh://github.com:zcrys/KothWars-Api.git</developerConnection>
+        <url>https://github.com/zcrys/KothWars-Api/tree/main</url>
+    </scm>
 
 </project>
