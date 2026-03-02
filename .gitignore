@@ -1,16 +1,47 @@
-# Archivos compilados
-target/
+# Compiled files
 *.class
+target/
+dependency-reduced-pom.xml
 
-# Archivos de IDE
+# IDE files
 .idea/
 *.iml
-.classpath
-.project
+*.iws
+*.ipr
 .settings/
+.project
+.classpath
+.factorypath
 .vscode/
+.sonarlint/
+nbproject/
 
-# Archivos del sistema
-*.log
-*.lock
+# OS files
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+
+# Backup files
+*.bak
+*.orig
+*~
+
+# Maven specific
+!/.mvn/wrapper/maven-wrapper.jar
+/.mvn/wrapper/maven-wrapper.properties
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Exclude specific files
+!README.md
+!LICENSE
+!pom.xml

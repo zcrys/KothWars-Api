@@ -8,11 +8,11 @@
 
     <groupId>com.github.zcrys</groupId>
     <artifactId>KothWars-Api</artifactId>
-    <version>1.1.0</version> <!-- Updated version -->
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>KothWars-API</name>
-    <description>Official API for the KothWars plugin - King of the Hill system</description>
+    <description>Official API for the KothWars plugin - King of the Hill system with statistics and clan support</description>
     <url>https://github.com/zcrys/KothWars</url>
 
     <properties>
@@ -50,7 +50,7 @@
                     <source>21</source>
                     <target>21</target>
                     <compilerArgs>
-                        <arg>-parameters</arg> <!-- Keeps parameter names for reflection -->
+                        <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -70,7 +70,7 @@
                 </executions>
             </plugin>
 
-            <!-- Generate Javadoc (optional but recommended) -->
+            <!-- Generate Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -117,5 +117,4 @@
         <developerConnection>scm:git:ssh://github.com:zcrys/KothWars-Api.git</developerConnection>
         <url>https://github.com/zcrys/KothWars-Api/tree/main</url>
     </scm>
-
 </project>

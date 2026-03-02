@@ -4,13 +4,11 @@ import org.bukkit.entity.Player;
 
 /**
  * Listener interface to receive events related to KOTHs.
- * <p>
  * All methods have empty default implementations, so you only need
  * to override the events you are interested in.
- * </p>
+
  *
- * <h3>Implementation example:</h3>
- * <pre>
+ * Implementation example:
  * public class MyListener implements KothListener {
  *
  *     &#64;Override
@@ -25,12 +23,7 @@ import org.bukkit.entity.Player;
  *         player.sendMessage("You have captured " + koth.getName() + "!");
  *     }
  * }
- * </pre>
  *
- * @author zcrys
- * @version 1.0.0
- * @see Koth
- * @see KothAPI
  */
 public interface KothListener {
 
@@ -60,10 +53,8 @@ public interface KothListener {
 
     /**
      * Called when a KOTH is suspended due to inactivity.
-     * <p>
      * This happens when there are no players in the area for the time
      * configured in autoSuspendTime.
-     * </p>
      *
      * @param koth The KOTH that was suspended
      */
@@ -71,11 +62,9 @@ public interface KothListener {
 
     /**
      * Called when a player begins capturing a KOTH.
-     * <p>
      * This occurs when a player enters the zone and there is no
      * active capturer, or when the current capturer leaves and
      * a new player takes their place.
-     * </p>
      *
      * @param koth The KOTH being captured
      * @param player The player who started capturing
@@ -84,10 +73,8 @@ public interface KothListener {
 
     /**
      * Called every second during capture to report progress.
-     * <p>
      * This event fires on every capture tick (each second)
      * while a player is actively capturing.
-     * </p>
      *
      * @param koth The KOTH being captured
      * @param player The player who is capturing
@@ -99,10 +86,8 @@ public interface KothListener {
 
     /**
      * Called when a player successfully completes capturing a KOTH.
-     * <p>
      * At this moment the configured rewards are executed and the
      * victory message is displayed.
-     * </p>
      *
      * @param koth The KOTH that was captured
      * @param player The player who captured the KOTH
@@ -128,10 +113,8 @@ public interface KothListener {
 
     /**
      * Called when a player dies inside the area of an active KOTH.
-     * <p>
      * This includes deaths caused by other players, the environment,
      * or natural causes.
-     * </p>
      *
      * @param koth The KOTH where the death occurred
      * @param player The player who died
@@ -141,13 +124,9 @@ public interface KothListener {
 
     /**
      * Called when a KOTH alert is sent.
-     * <p>
      * This happens in two situations:
-     * <ul>
-     *   <li>Capture alerts: when someone is about to capture</li>
-     *   <li>Auto-start alerts: minutes before an automatic start</li>
-     * </ul>
-     * </p>
+     *   Capture alerts: when someone is about to capture
+     *   Auto-start alerts: minutes before an automatic start
      *
      * @param koth The KOTH related to the alert
      * @param minutesBefore Minutes before the event (0 for capture alerts)
@@ -170,4 +149,44 @@ public interface KothListener {
      * @param deleter The player who deleted the KOTH
      */
     default void onKothDeleted(Koth koth, Player deleter) {}
+
+    // ========== NEW EVENTS (v1.2.0) ==========
+
+    /**
+     * Called when a player's kill is recorded inside a KOTH zone.
+     * This event provides detailed information about the kill,
+     * useful for statistics tracking and custom rewards.
+     *
+     * @param koth The KOTH where the kill occurred
+     * @param killer The player who made the kill
+     * @param victim The player who was killed
+     * @param assistCount Number of players who assisted in the kill
+     * @param assists List of players who assisted (may be empty)
+     * @since 1.2.0
+     */
+    default void onKothKill(Koth koth, Player killer, Player victim, int assistCount, java.util.List<Player> assists) {}
+
+    /**
+     * Called when a player's statistics are updated.
+     * This event fires whenever any statistic changes for a player
+     * (captures, kills, deaths, etc.).
+     *
+     * @param player The player whose stats changed
+     * @param oldStats The player's statistics before the change
+     * @param newStats The player's statistics after the change
+     * @since 1.2.0
+     */
+    default void onPlayerStatsUpdated(Player player, PlayerStats oldStats, PlayerStats newStats) {}
+
+    /**
+     * Called when a KOTH's statistics are updated.
+     * This event fires whenever any statistic changes for a KOTH
+     * (total captures, kills in zone, etc.).
+     *
+     * @param koth The KOTH whose stats changed
+     * @param oldStats The KOTH's statistics before the change
+     * @param newStats The KOTH's statistics after the change
+     * @since 1.2.0
+     */
+    default void onKothStatsUpdated(Koth koth, KothStats oldStats, KothStats newStats) {}
 }
