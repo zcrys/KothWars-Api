@@ -1,4 +1,4 @@
-
+```markdown
 # KothWars API
 
 **Official API for integrating King of the Hill events into Paper plugins.**
@@ -20,6 +20,7 @@
 - [Koth Interface](#koth-interface)
 - [Statistics System](#statistics-system)
 - [Clan Integration](#clan-integration)
+- [PlaceholderAPI Support](#placeholderapi-support)
 - [Examples](#examples)
 - [Performance](#performance)
 - [FAQ](#faq)
@@ -53,17 +54,6 @@ KothWars API provides a clean, event-driven interface to interact with King of t
 - `onKothKill` - Detailed kill information with assists
 - `onPlayerStatsUpdated` - Track when player statistics change
 - `onKothStatsUpdated` - Track when KOTH statistics change
-
-### New Placeholders
-- `%kothwars_stats_captures%` - Player's total captures
-- `%kothwars_stats_kills%` - Player's total kills
-- `%kothwars_stats_deaths%` - Player's total deaths
-- `%kothwars_stats_assists%` - Player's total assists
-- `%kothwars_stats_kdr%` - Player's K/D ratio
-- `%kothwars_stats_time%` - Player's total time capturing
-- `%kothwars_stats_participated%` - KOTHs participated
-- `%kothwars_clan%` - Player's clan tag (raw)
-- `%kothwars_clan_format%` - Player's name with clan tag
 
 ---
 
@@ -242,10 +232,49 @@ public class MyKothListener implements KothListener {
 
 The `Koth` object exposes the full state of a KOTH instance, now including statistics methods.
 
-### Statistics Methods (new in v1.2.0)
+### Basic Information
 
 ```java
-// Get KOTH statistics
+String name = koth.getName();
+UUID uniqueId = koth.getUniqueId();
+World world = koth.getWorld();
+Location center = koth.getCenter();
+boolean isActive = koth.isActive();
+```
+
+### Capture Information
+
+```java
+Optional<UUID> capturerId = koth.getCurrentCapturer();
+Optional<String> capturerName = koth.getCurrentCapturerName();
+int progress = koth.getCaptureProgress();
+int captureTime = koth.getCaptureTime();
+int remainingTime = koth.getRemainingTime();
+int percentage = koth.getCapturePercentage();
+```
+
+### Schedule Information
+
+```java
+boolean autoStartEnabled = koth.isAutoStartEnabled();
+List<String> scheduledTimes = koth.getScheduledTimes("MONDAY");
+boolean isDayEnabled = koth.isDayEnabled("MONDAY");
+long timeUntilNextStart = koth.getTimeUntilNextStart();
+Optional<String> lastKothTime = koth.getLastKothTime();
+```
+
+### Zone Information
+
+```java
+boolean isInside = koth.contains(location);
+String bossbarType = koth.getBossbarType();
+String outlineColor = koth.getOutlineColor();
+int autoSuspendTime = koth.getAutoSuspendTime();
+```
+
+### Statistics Methods
+
+```java
 int totalCaptures = koth.getTotalCaptures();
 int totalKills = koth.getTotalKills();
 int totalDeaths = koth.getTotalDeaths();
@@ -253,35 +282,28 @@ int totalActivations = koth.getTotalActivations();
 long totalActiveTime = koth.getTotalActiveTime();
 ```
 
-### Clan Methods (new in v1.2.0)
+### Clan Methods
 
 ```java
-// Check if clan rewards are enabled for this KOTH
 boolean clanEnabled = koth.isClanRewardsEnabled();
-
-// Get current capturer's clan tag
 Optional<String> clanTag = koth.getCurrentCapturerClan();
-
-// Get formatted display name with clan
 Optional<String> displayName = koth.getCurrentCapturerDisplayName();
-
-// Get all players who will receive rewards
 Collection<Player> recipients = koth.getRewardRecipients();
+```
+
+### Reward Information
+
+```java
+Collection<Integer> activeRewardSlots = koth.getActiveRewardSlots();
+int rewardCount = koth.getRewardCount(slot);
 ```
 
 ### Querying KOTHs
 
 ```java
-// Get all KOTHs
 Collection<Koth> koths = api.getKoths();
-
-// Get by name (case-insensitive)
 Optional<Koth> koth = api.getKoth("hillzone");
-
-// Get by UUID
 Optional<Koth> koth = api.getKoth(uuid);
-
-// Check existence
 boolean exists = api.hasKoth("hillzone");
 ```
 
@@ -326,10 +348,7 @@ if (koth != null) {
 Get top players by captures or kills:
 
 ```java
-// Top 10 players by captures
 List<PlayerStats> topCapturers = api.getTopPlayersByCaptures(10);
-
-// Top 5 players by kills
 List<PlayerStats> topKillers = api.getTopPlayersByKills(5);
 
 for (PlayerStats stats : topCapturers) {
@@ -355,16 +374,9 @@ clan:
 ### API Methods
 
 ```java
-// Check if clan integration is enabled
 boolean enabled = api.isClanIntegrationEnabled();
-
-// Get player's clan tag (empty string if none)
 String tag = api.getPlayerClanTag(player);
-
-// Get online clan members (includes the player)
 List<Player> members = api.getClanMembers(player);
-
-// Format player name with clan tag
 String displayName = api.formatPlayerNameWithClan(player);
 ```
 
@@ -384,6 +396,68 @@ public void onCaptureComplete(Koth koth, Player player, int rewardsCount) {
         }
     }
 }
+```
+
+---
+
+## PlaceholderAPI Support
+
+KothWars provides extensive PlaceholderAPI support for displaying KOTH information anywhere placeholders are supported (scoreboards, chat, signs, etc.).
+
+### KOTH Information Placeholders
+
+Replace `NAME` with your KOTH name (case-insensitive):
+
+| Placeholder | Description |
+|---|---|
+| `%kothwars_capturer_NAME%` | Name of player currently capturing |
+| `%kothwars_capturing_NAME%` | Returns "true" if being captured |
+| `%kothwars_progress_NAME%` | Current capture progress in seconds |
+| `%kothwars_active_NAME%` | Returns "Active" or "Inactive" |
+| `%kothwars_time_NAME%` | Time until next start (HH:MM:SS) |
+| `%kothwars_time_hours_NAME%` | Hours until next start |
+| `%kothwars_time_minutes_NAME%` | Minutes until next start |
+| `%kothwars_time_seconds_NAME%` | Seconds until next start |
+| `%kothwars_next_NAME%` | Next start time (HH:MM:SS) |
+| `%kothwars_nextkoth_NAME%` | Alias for next start time |
+| `%kothwars_last_capturer_NAME%` | Last player who captured this KOTH |
+
+### Player Statistics Placeholders
+
+| Placeholder | Description |
+|---|---|
+| `%kothwars_stats_captures%` | Player's total captures |
+| `%kothwars_stats_kills%` | Player's total kills in KOTHs |
+| `%kothwars_stats_deaths%` | Player's total deaths in KOTHs |
+| `%kothwars_stats_assists%` | Player's total assists in KOTHs |
+| `%kothwars_stats_kdr%` | Player's K/D ratio (formatted) |
+| `%kothwars_stats_time%` | Player's total time capturing |
+| `%kothwars_stats_participated%` | KOTHs player has participated in |
+
+### Glow System Placeholders
+
+| Placeholder | Description |
+|---|---|
+| `%kothwarsglow_color%` | Player's glow color code (&c, &a, etc.) |
+| `%kothwarsglow_hex%` | Player's glow color in HEX (#FF5555) |
+| `%kothwarsglow_hex_no_hash%` | HEX color without # (FF5555) |
+
+### Clan Integration Placeholders
+
+| Placeholder | Description |
+|---|---|
+| `%kothwars_clan_user%` | Player name with clan tag (formatted) |
+| `%kothwars_clan_user_raw%` | Raw clan tag only |
+
+### Examples
+
+```
+%kothwars_capturer_Plains% → "Steve"
+%kothwars_active_Plains% → "Active"
+%kothwars_time_Plains% → "02:30:00"
+%kothwars_stats_captures% → "42"
+%kothwarsglow_color% → "&c"
+%kothwars_clan_user% → "[WAR] Steve"
 ```
 
 ---
@@ -409,7 +483,6 @@ public void onCaptureComplete(Koth koth, Player player, int rewardsCount) {
     
     if (stats.getTotalCaptures() == 10) {
         player.sendMessage("§6Congratulations! You've reached 10 total captures!");
-        // Give special reward
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
             "give " + player.getName() + " diamond 10");
     }
@@ -459,7 +532,6 @@ public void showLeaderboard(Player player) {
 public void onKothKill(Koth koth, Player killer, Player victim, 
                        int assistCount, List<Player> assists) {
     
-    // Update some custom tracking
     PlayerStats killerStats = api.getPlayerStats(killer);
     
     if (killerStats.getTotalKills() % 5 == 0) {
@@ -467,7 +539,6 @@ public void onKothKill(Koth koth, Player killer, Player victim,
             " kills inside KOTHs!");
     }
     
-    // Show assists
     if (!assists.isEmpty()) {
         StringBuilder assistNames = new StringBuilder();
         for (Player assist : assists) {
@@ -476,6 +547,27 @@ public void onKothKill(Koth koth, Player killer, Player victim,
         }
         killer.sendMessage("§7Assisted by: §f" + assistNames.toString());
     }
+}
+```
+
+### Example 6: Scoreboard Integration with Placeholders
+
+```java
+public void updateScoreboard(Player player) {
+    Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+    Objective obj = board.registerNewObjective("koth", "dummy", "§6KOTH Info");
+    obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+    
+    // Use PlaceholderAPI to parse placeholders
+    String capturer = PlaceholderAPI.setPlaceholders(player, "%kothwars_capturer_Plains%");
+    String active = PlaceholderAPI.setPlaceholders(player, "%kothwars_active_Plains%");
+    String stats = PlaceholderAPI.setPlaceholders(player, "%kothwars_stats_captures%");
+    
+    obj.getScore("Capturer: " + capturer).setScore(3);
+    obj.getScore("Status: " + active).setScore(2);
+    obj.getScore("Your Captures: " + stats).setScore(1);
+    
+    player.setScoreboard(board);
 }
 ```
 
@@ -525,7 +617,15 @@ Any clan plugin that provides PlaceholderAPI placeholders. Configure the placeho
 
 **Do clan rewards work with all KOTHs?**
 
-Yes, if `clan.enabled` is true in config, all KOTHs will distribute rewards to clan members. This can be overridden per-KOTH in future versions.
+Yes, if `clan.enabled` is true in config, all KOTHs will distribute rewards to clan members.
+
+**What placeholders are available for scoreboards?**
+
+All placeholders listed in the [PlaceholderAPI Support](#placeholderapi-support) section work in any PlaceholderAPI-compatible plugin, including scoreboards, chat formatting, signs, and custom GUI plugins.
+
+**Does the API support hex colors?**
+
+Yes, all messages support hex colors using the format `&#RRGGBB`. Example: `&#FF5555Red Text`.
 
 ---
 
@@ -544,3 +644,4 @@ Yes, if `clan.enabled` is true in config, all KOTHs will distribute rewards to c
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+```
