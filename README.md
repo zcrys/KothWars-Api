@@ -1,4 +1,4 @@
-```markdown
+
 # KothWars API
 
 **Official API for integrating King of the Hill events into Paper plugins.**
@@ -196,7 +196,6 @@ public class MyKothListener implements KothListener {
 
     @Override
     public void onCaptureComplete(Koth koth, Player player, int rewardsCount) {
-        // Get clan information
         String clanTag = api.getPlayerClanTag(player);
         String displayName = clanTag.isEmpty() ? 
             player.getName() : 
@@ -204,7 +203,6 @@ public class MyKothListener implements KothListener {
             
         Bukkit.broadcastMessage(displayName + " captured " + koth.getName() + "!");
         
-        // Get statistics
         PlayerStats stats = api.getPlayerStats(player);
         player.sendMessage("You now have " + stats.getTotalCaptures() + " total captures!");
     }
@@ -216,13 +214,6 @@ public class MyKothListener implements KothListener {
             killer.sendMessage(assistCount + " player(s) assisted you!");
         }
     }
-
-    @Override
-    public void onPlayerStatsUpdated(Player player, PlayerStats oldStats, PlayerStats newStats) {
-        if (newStats.getTotalCaptures() > oldStats.getTotalCaptures()) {
-            player.sendMessage("Congratulations on your " + newStats.getTotalCaptures() + "th capture!");
-        }
-    }
 }
 ```
 
@@ -230,7 +221,7 @@ public class MyKothListener implements KothListener {
 
 ## Koth Interface
 
-The `Koth` object exposes the full state of a KOTH instance, now including statistics methods.
+The `Koth` object exposes the full state of a KOTH instance.
 
 ### Basic Information
 
@@ -291,13 +282,6 @@ Optional<String> displayName = koth.getCurrentCapturerDisplayName();
 Collection<Player> recipients = koth.getRewardRecipients();
 ```
 
-### Reward Information
-
-```java
-Collection<Integer> activeRewardSlots = koth.getActiveRewardSlots();
-int rewardCount = koth.getRewardCount(slot);
-```
-
 ### Querying KOTHs
 
 ```java
@@ -312,8 +296,6 @@ boolean exists = api.hasKoth("hillzone");
 ## Statistics System
 
 ### Player Statistics
-
-Access player statistics through the API:
 
 ```java
 PlayerStats stats = api.getPlayerStats(player);
@@ -330,8 +312,6 @@ String formattedTime = stats.getFormattedTime();
 
 ### KOTH Statistics
 
-Access KOTH statistics through the Koth object:
-
 ```java
 Koth koth = api.getKoth("hillzone").orElse(null);
 if (koth != null) {
@@ -344,8 +324,6 @@ if (koth != null) {
 ```
 
 ### Leaderboards
-
-Get top players by captures or kills:
 
 ```java
 List<PlayerStats> topCapturers = api.getTopPlayersByCaptures(10);
@@ -402,7 +380,7 @@ public void onCaptureComplete(Koth koth, Player player, int rewardsCount) {
 
 ## PlaceholderAPI Support
 
-KothWars provides extensive PlaceholderAPI support for displaying KOTH information anywhere placeholders are supported (scoreboards, chat, signs, etc.).
+KothWars provides extensive PlaceholderAPI support for displaying KOTH information anywhere placeholders are supported.
 
 ### KOTH Information Placeholders
 
@@ -430,7 +408,7 @@ Replace `NAME` with your KOTH name (case-insensitive):
 | `%kothwars_stats_kills%` | Player's total kills in KOTHs |
 | `%kothwars_stats_deaths%` | Player's total deaths in KOTHs |
 | `%kothwars_stats_assists%` | Player's total assists in KOTHs |
-| `%kothwars_stats_kdr%` | Player's K/D ratio (formatted) |
+| `%kothwars_stats_kdr%` | Player's K/D ratio |
 | `%kothwars_stats_time%` | Player's total time capturing |
 | `%kothwars_stats_participated%` | KOTHs player has participated in |
 
@@ -550,27 +528,6 @@ public void onKothKill(Koth koth, Player killer, Player victim,
 }
 ```
 
-### Example 6: Scoreboard Integration with Placeholders
-
-```java
-public void updateScoreboard(Player player) {
-    Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-    Objective obj = board.registerNewObjective("koth", "dummy", "§6KOTH Info");
-    obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-    
-    // Use PlaceholderAPI to parse placeholders
-    String capturer = PlaceholderAPI.setPlaceholders(player, "%kothwars_capturer_Plains%");
-    String active = PlaceholderAPI.setPlaceholders(player, "%kothwars_active_Plains%");
-    String stats = PlaceholderAPI.setPlaceholders(player, "%kothwars_stats_captures%");
-    
-    obj.getScore("Capturer: " + capturer).setScore(3);
-    obj.getScore("Status: " + active).setScore(2);
-    obj.getScore("Your Captures: " + stats).setScore(1);
-    
-    player.setScoreboard(board);
-}
-```
-
 ---
 
 ## Performance
@@ -619,14 +576,6 @@ Any clan plugin that provides PlaceholderAPI placeholders. Configure the placeho
 
 Yes, if `clan.enabled` is true in config, all KOTHs will distribute rewards to clan members.
 
-**What placeholders are available for scoreboards?**
-
-All placeholders listed in the [PlaceholderAPI Support](#placeholderapi-support) section work in any PlaceholderAPI-compatible plugin, including scoreboards, chat formatting, signs, and custom GUI plugins.
-
-**Does the API support hex colors?**
-
-Yes, all messages support hex colors using the format `&#RRGGBB`. Example: `&#FF5555Red Text`.
-
 ---
 
 ## Compatibility
@@ -644,4 +593,3 @@ Yes, all messages support hex colors using the format `&#RRGGBB`. Example: `&#FF
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-```
